@@ -1,5 +1,7 @@
 import React from "react";
+import Section from "../UI/Section";
 import ProductItem from "./ProductItem";
+import styles from "./Products.module.css";
 
 
 const Products = (props) => {
@@ -11,27 +13,28 @@ const Products = (props) => {
 
    if (!props.isLoading && props.productsArray.length > 0) {
       content = (
-         props.productsArray.map(((product, index) => (
-            <ul>
+         <ul>
+            {props.productsArray.map(((product, index) => (
+
                <ProductItem
                   number={index + 1}
                   key={product.id}
                   name={product.name}
                   price={product.price}
                />
-            </ul>
-         )))
+            )))}
+         </ul>
       )
    };
 
    if (props.error !== null) {
-      content = <button onClick={props.getProducts}>Попробовать еще раз</button>
+      content = <button type="button" onClick={props.getProducts}>Попробовать еще раз</button>
    };
 
    return (
-      <div>
-         {content}
-      </div>
+      <Section>
+         <div className={styles.productsList}>{content}</div>
+      </Section>
    );
 };
 

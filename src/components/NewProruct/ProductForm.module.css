@@ -1,0 +1,35 @@
+.form {
+   font-size: 20px;
+}
+
+.formBlock {
+   display: flex;
+   margin: 15px 0;
+}
+
+.form div label {
+   display: block;
+   flex: 1 0 150px;
+}
+
+.form div input {
+   outline: none;
+   padding: 5px;
+   border-radius: 5px;
+}
+
+.form button {
+   display: flex;
+   padding: 10px 20px;
+   background-color: rgb(175, 207, 245);
+   color: rgb(2, 36, 71);
+   border-radius: 10px;
+   cursor: pointer;
+   transition: 0.3s;
+}
+
+@media (any-hover: hover) {
+   .form button:hover {
+      background-color: rgb(69, 111, 163);
+   }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useHttp from "../../hooks/use-http";
+import Section from "../UI/Section";
 import ProductForm from "./ProductForm";
 
 const NewProduct = (props) => {
@@ -51,10 +52,10 @@ const NewProduct = (props) => {
 
    // }
    return (
-      <div>
+      <Section>
          <ProductForm addProduct={addProductHandler} loading={isLoading} />
          {error && <p>{error}</p>}
-      </div>
+      </Section>
    );
 };
 

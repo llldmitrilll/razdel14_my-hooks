@@ -36,9 +36,6 @@ function App() {
         error={error}
         getProducts={getProducts}
       />
-      <div className="App">
-        {/* {!isLoading && productsArray.length > 0 && productsArray[3].name} */}
-      </div>
     </React.Fragment>
 
   );

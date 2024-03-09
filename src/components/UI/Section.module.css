@@ -1,0 +1,8 @@
+.section {
+   margin: 20px auto;
+   width: 100%;
+   max-width: 500px;
+   border-radius: 20px;
+   background-color: #7fad98;
+   padding: 30px 50px;
+}

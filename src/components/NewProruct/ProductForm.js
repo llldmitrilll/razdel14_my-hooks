@@ -26,14 +26,14 @@ const ProductForm = (props) => {
 
 
    return (
-      <form onSubmit={submitHandler}>
-         <div>
+      <form className={styles.form} onSubmit={submitHandler}>
+         <div className={styles.formBlock}>
             <label htmlFor="name" >Name product</label>
-            <input id="name" type="text" ref={productRef} />
+            <input placeholder="Product" id="name" type="text" ref={productRef} />
          </div>
-         <div>
+         <div className={styles.formBlock}>
             <label htmlFor="price">Price product</label>
-            <input id="price" type="number" ref={priceRef} />
+            <input placeholder="Price" id="price" type="number" ref={priceRef} />
          </div>
 
          <button>
