@@ -28,8 +28,23 @@
    transition: 0.3s;
 }
 
+.errorProduct {
+   font-size: 20px;
+   font-weight: 600;
+   color: red;
+   text-align: right;
+}
+
 @media (any-hover: hover) {
    .form button:hover {
       background-color: rgb(69, 111, 163);
    }
+}
+
+button:disabled,
+button:disabled:hover,
+button:disabled:active {
+   background: #ccc;
+   color: #333;
+   cursor: not-allowed;
 }
