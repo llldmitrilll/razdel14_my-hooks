@@ -2,9 +2,20 @@
    font-size: 20px;
 }
 
-.formBlock {
+.formBlock,
+.formBlock.invalid {
    display: flex;
    margin: 15px 0;
+}
+
+.formBlock.invalid input {
+   background-color: rgb(240, 217, 217);
+   border-color: red;
+}
+
+.formBlock input:focus {
+   background-color: rgb(220, 226, 163);
+   border-color: rgb(100, 128, 37);
 }
 
 .form div label {
@@ -16,6 +27,7 @@
    outline: none;
    padding: 5px;
    border-radius: 5px;
+   border: 1px solid #ccc;
 }
 
 .form button {

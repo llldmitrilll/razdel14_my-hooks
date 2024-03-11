@@ -13,12 +13,13 @@ const NewProduct = (props) => {
          const generatedId = productData.name;
          product = { ...product, id: generatedId }
          props.onAddProduct(product)
+
       }
 
       sendProduct({
          endpoint: 'https://react-course-http-f59d2-default-rtdb.firebaseio.com/products.json',
          method: 'POST',
-         body: product,
+         body: { ...product },
          headers: {
             "Content-Type": "application/json",
          }
@@ -54,7 +55,7 @@ const NewProduct = (props) => {
    return (
       <Section>
          <ProductForm addProduct={addProductHandler} loading={isLoading} />
-         {error && <p>{error}</p>}
+         {!error && <p>{error}</p>}
       </Section>
    );
 };

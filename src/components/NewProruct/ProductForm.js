@@ -1,111 +1,93 @@
 import React, { useState } from "react";
 import styles from "./ProductForm.module.css";
+import useInput from "../../hooks/use-input";
+
+const isInputEmpty = (value) => (value.trim() !== "")
 
 const ProductForm = (props) => {
-   const [isPrice, setIsPrice] = useState("");
-   const [inputPriceTouched, setInputPriceTouched] = useState(false);
+   const {
+      inputValue: inputProduct,
+      isInputValid: isProductValid,
+      isInputInvalid: isProductInvalid,
+      inputChangeHandler: productChangeHandler,
+      inputLostFocusHandler: productLostFocusHandler,
+      resetValues: resetProductValues
+   } = useInput(isInputEmpty);
 
-   const [isProduct, setIsProduct] = useState("");
-   const [inputTouched, setInputTouched] = useState(false);
+   const {
+      inputValue: inputEmail,
+      isInputValid: isEmailValid,
+      isInputInvalid: isEmailInvalid,
+      inputChangeHandler: emailChangeHandler,
+      inputLostFocusHandler: emailLostFocusHandler,
+      resetValues: resetEmailValues
+   } = useInput((value) => (value.trim() !== "" && value.includes('@')))
 
-   const [isEmail, setIsEmail] = useState("");
-   const [inputEmailTouched, setInputEmailTouched] = useState(false);
+   const {
+      inputValue: inputPrice,
+      isInputValid: isPriceValid,
+      isInputInvalid: isPriceInvalid,
+      inputChangeHandler: priceChangeHandler,
+      inputLostFocusHandler: priceLostFocusHandler,
+      resetValues: resetPriceValues
+   } = useInput(isInputEmpty)
 
-   const isProductValid = isProduct.trim() !== "";
-   const isProductInpInvalid = !isProductValid && inputTouched;
-
-   const isPriceValid = isPrice.trim() !== "";
-   const isPriceInpInvalid = !isPriceValid && inputPriceTouched;
-
-   const isEmailValid = isEmail.trim() !== "" && isEmail.includes('@');
-   const isEmailInpInvalid = !isEmailValid && inputEmailTouched;
-
-   let isFormValid = isProductValid && isPriceValid && isEmailValid;
-   // let isFormValid = true;
-   // if (isProductValid && isPriceValid && isEmailValid) {
-   //    isFormValid = false;
-   // }
-
-   const productInputChangeHandler = (event) => {
-      setIsProduct(event.target.value);
-      setInputTouched(false);
-   }
-
-   const emailInputChangeHandler = (event) => {
-      setIsEmail(event.target.value);
-      setInputEmailTouched(false);
-   }
-
-   const priceInputChangeHandler = (event) => {
-      setIsPrice(event.target.value);
-      setInputPriceTouched(false);
-   }
-
-
-   const inputTouchedHendler = () => {
-      setInputTouched(true);
-   }
-
-   const inputEmailTouchedHendler = () => {
-      setInputEmailTouched(true)
-   }
-
-   const inputPriceTouchedHendler = () => {
-      setInputPriceTouched(true);
-   }
+   let isFormValid = isProductValid && isEmailValid && isPriceValid;
 
    function submitHandler(event) {
       event.preventDefault();
 
-      setInputTouched(true);
+      if (!isFormValid) return;
 
-      if (!isEmail.includes('@')) return;
+      const product = {
+         name: inputProduct,
+         price: inputPrice
+      }
 
-      setIsProduct("");
-      setInputTouched(false);
-      setIsPrice("");
-      setInputPriceTouched(false);
-      setIsEmail("");
-      setInputEmailTouched(false);
+      props.addProduct(product);
+
+      resetProductValues();
+      resetEmailValues();
+      resetPriceValues();
    }
 
    return (
       <form className={styles.form} onSubmit={submitHandler}>
-         <div className={styles.formBlock}>
+         <div className={`${styles.formBlock} ${isProductInvalid && styles.invalid}`}>
             <label htmlFor="name" >Name product</label>
             <input
                placeholder="Product"
                id="name"
                type="text"
-               onBlur={inputTouchedHendler}
-               onChange={productInputChangeHandler}
-               value={isProduct}
+               onBlur={productLostFocusHandler}
+               onChange={productChangeHandler}
+               value={inputProduct}
             />
          </div>
-         {isProductInpInvalid && <p className={styles.errorProduct}>Please print name product</p>}
-         <div className={styles.formBlock}>
+         {isProductInvalid && <p className={styles.errorProduct}>Please print name product</p>}
+         <div className={`${styles.formBlock} ${isEmailInvalid && styles.invalid}`}>
             <label htmlFor="name" >Print Email</label>
             <input
-               placeholder="Product"
+               placeholder="Email"
                id="name"
                type="text"
-               onBlur={inputEmailTouchedHendler}
-               onChange={emailInputChangeHandler}
-               value={isEmail}
+               onBlur={emailLostFocusHandler}
+               onChange={emailChangeHandler}
+               value={inputEmail}
             />
          </div>
-         {isEmailInpInvalid && <p className={styles.errorProduct}>Please print Email</p>}
-         <div className={styles.formBlock}>
+         {isEmailInvalid && <p className={styles.errorProduct}>Please print Email</p>}
+         <div className={`${styles.formBlock} ${isPriceInvalid && styles.invalid}`}>
             <label htmlFor="price">Price product</label>
             <input
                placeholder="Price"
                id="price"
                type="number"
-               onBlur={inputPriceTouchedHendler}
-               onChange={priceInputChangeHandler}
-               value={isPrice} />
+               onBlur={priceLostFocusHandler}
+               onChange={priceChangeHandler}
+               value={inputPrice} />
          </div>
-         {isPriceInpInvalid && <p className={styles.errorProduct}>Input Price lost focus</p>}
+         {isPriceInvalid && <p className={styles.errorProduct}>Input Price lost focus</p>}
          <button disabled={!isFormValid}>
             {props.loading ? "Loaded propuct" : "Add Product"}
          </button>
