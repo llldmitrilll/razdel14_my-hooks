@@ -6,26 +6,26 @@ import ProductForm from "./ProductForm";
 const NewProduct = (props) => {
    const { isLoading, error, sendHttpRequest: sendProduct } = useHttp();
 
-
    const addProductHandler = async (product) => {
 
-      const createProduct = (product, productData) => {
+      const createProduct = (productData) => {
          const generatedId = productData.name;
-         product = { ...product, id: generatedId }
-         props.onAddProduct(product)
-
+         product = { ...product, id: generatedId };
+         props.onAddProduct(product);
       }
 
       sendProduct({
          endpoint: 'https://react-course-http-f59d2-default-rtdb.firebaseio.com/products.json',
          method: 'POST',
-         body: { ...product },
+         body: product,
          headers: {
             "Content-Type": "application/json",
          }
-
       }, createProduct)
    }
+
+   // const [isLoading, setIsLoading] = useState(false);
+   // const [error, setError] = useState(null);
 
    // async function addProductHandler(product) {
    //    setIsLoading(true);
@@ -41,21 +41,19 @@ const NewProduct = (props) => {
    //       if (!response.ok) throw new Error("Somesing error.")
 
    //       const data = await response.json()
-
    //       const generatedId = data.name;
    //       product = { ...product, id: generatedId }
    //       setIsLoading(false);
    //       props.onAddProduct(product)
-
    //    } catch (error) {
    //       setError(error.mesage || "Response error.")
    //    }
-
    // }
+
    return (
       <Section>
          <ProductForm addProduct={addProductHandler} loading={isLoading} />
-         {!error && <p>{error}</p>}
+         {error && <p>{error}</p>}
       </Section>
    );
 };

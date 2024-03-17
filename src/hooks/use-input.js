@@ -1,29 +1,45 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
+
+const initialInputState = {
+   inputValue: "",
+   wasTouched: false
+}
+
+const inputStateReducer = (state, action) => {
+   if (action.type === "INPUT_CHANGE") {
+      return { inputValue: action.value, wasTouched: state.wasTouched };
+   }
+   if (action.type === "INPUT_BLUR") {
+      return { inputValue: state.inputValue, wasTouched: true };
+   }
+   if (action.type === "RESET_INPUT") {
+      return { inputValue: "", wasTouched: false };
+   }
+   return initialInputState;
+}
 
 const useInput = (validateValueFunc) => {
 
-   const [inputValue, setInputValue] = useState("");
-   const [wasInputTouched, setWasInputTouched] = useState(false);
+   const [inputState, dispatchAction] = useReducer(inputStateReducer, initialInputState);
 
-   const isInputValid = validateValueFunc(inputValue);
-   const isInputInvalid = !isInputValid && wasInputTouched;
+   const isInputValid = validateValueFunc(inputState.inputValue);
+   const isInputInvalid = !isInputValid && inputState.wasTouched;
 
    const inputChangeHandler = (event) => {
-      setInputValue(event.target.value);
-      setWasInputTouched(false);
+      dispatchAction({ type: "INPUT_CHANGE", value: event.target.value });
+      // dispatchAction({type:"INPUT_BLUR"});
    }
 
    const inputLostFocusHandler = () => {
-      setWasInputTouched(true);
+      dispatchAction({ type: "INPUT_BLUR" })
    }
 
    const resetValues = () => {
-      setInputValue("");
-      setWasInputTouched(false);
+      dispatchAction({ type: "RESET_INPUT" });
    }
 
    return {
-      inputValue,
+      inputValue: inputState.inputValue,
       isInputValid,
       isInputInvalid,
       inputChangeHandler,
